@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { DataTable } from 'primereact/datatable';
+import { DataTable, DataTableStateEvent } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Checkbox } from 'primereact/checkbox';
 
@@ -55,8 +54,10 @@ const ArtworksTable: React.FC = () => {
     };
 
     // This function handles page changes when the user navigates
-    const onPageChange = (event: { page: number }) => {
-        setPage(event.page + 1); // Update the current page based on user action
+    const onPageChange = (event: DataTableStateEvent) => {
+        if (event.page !== undefined) {
+            setPage(event.page + 1); // Update the current page based on user action
+        }
     };
 
     return (
@@ -82,8 +83,8 @@ const ArtworksTable: React.FC = () => {
             </DataTable>
             {/* Pagination controls to navigate through pages */}
             <div>
-                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>Previous</button>
-                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}>Next</button>
+                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>Previous</button>
+                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>Next</button>
             </div>
         </div>
     );
